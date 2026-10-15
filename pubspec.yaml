@@ -1,0 +1,27 @@
+name: mahaderati_university
+description: محاضراتي — تطبيق مستقل للطالب الجامعي
+publish_to: "none"
+version: 1.0.0+1
+
+environment:
+  sdk: ">=3.4.0 <4.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  image_picker: ^1.1.2
+  shared_preferences: ^2.5.3
+  pdf: ^3.11.1
+  printing: ^5.13.4
+  flutter_tesseract_ocr: ^0.4.31
+  http: ^1.5.0
+  path_provider: ^2.1.5
+  share_plus: ^12.0.2
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^5.0.0
+
+flutter:
+  uses-material-design: true

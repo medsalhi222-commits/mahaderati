@@ -1,0 +1,37 @@
+name: Build Mahaderati Android APK
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout project
+        uses: actions/checkout@v4
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          flutter-version: '3.35.3'
+          cache: true
+
+      - name: Generate Android platform files
+        run: flutter create --platforms=android --org com.mahaderati .
+
+      - name: Resolve dependencies
+        run: flutter pub get
+
+      - name: Build APK
+        run: flutter build apk --release
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: mahaderati-android-apk
+          path: build/app/outputs/flutter-apk/app-release.apk
+          if-no-files-found: error
