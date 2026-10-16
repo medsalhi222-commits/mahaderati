@@ -2,9 +2,7 @@ name: Build Flutter APK
 
 on:
   push:
-    branches:
-      - main
-      - master
+    branches: [ main ]
   workflow_dispatch:
 
 jobs:
@@ -19,18 +17,20 @@ jobs:
         uses: actions/setup-java@v4
         with:
           distribution: 'zulu'
-          java-version: '11'
+          java-version: '17'
 
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
           flutter-version: '3.24.0'
           channel: 'stable'
+          cache: true
 
-      - name: Create missing files and Force Update
-        run: |
-          flutter create .
-          flutter pub upgrade --major-versions
+      - name: Create Android folder
+        run: flutter create . --project-name mahaderati_university --platforms=android
+
+      - name: Install dependencies
+        run: flutter pub get
 
       - name: Build APK
         run: flutter build apk --release
