@@ -27,8 +27,10 @@ jobs:
           flutter-version: '3.24.0'
           channel: 'stable'
 
-      - name: Install Dependencies
-        run: flutter pub get
+      - name: Create missing files and Install Dependencies
+        run: |
+          flutter create .
+          flutter pub get
 
       - name: Build APK
         run: flutter build apk --release
