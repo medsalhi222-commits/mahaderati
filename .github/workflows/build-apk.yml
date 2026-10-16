@@ -26,26 +26,29 @@ jobs:
           channel: 'stable'
           cache: true
 
-      - name: Create Android folder
+      - name: Create Android folder if missing
         run: flutter create . --project-name mahaderati_university --platforms=android
 
-      - name: Configure Kotlin and Android SDK
+      - name: Configure Android SDK 35 & Kotlin
         run: |
-          # تحديث إصدار Kotlin في settings.gradle أو settings.gradle.kts
-          if [ -f "android/settings.gradle.kts" ]; then
-            sed -i -E 's/id\("org.jetbrains.kotlin.android"\) version "[^"]+"/id("org.jetbrains.kotlin.android") version "1.9.24"/' android/settings.gradle.kts
+          # ضبط compileSdk و targetSdk إلى 35 في ملف build.gradle.kts أو build.gradle
+          if [ -f "android/app/build.gradle.kts" ]; then
+            sed -i -E 's/compileSdk = [0-9]+/compileSdk = 35/' android/app/build.gradle.kts
+            sed -i -E 's/targetSdk = [0-9]+/targetSdk = 35/' android/app/build.gradle.kts
           fi
-          if [ -f "android/settings.gradle" ]; then
-            sed -i -E 's/id "org.jetbrains.kotlin.android" version "[^"]+"/id "org.jetbrains.kotlin.android" version "1.9.24"/' android/settings.gradle
+          if [ -f "android/app/build.gradle" ]; then
+            sed -i -E 's/compileSdkVersion [0-9]+/compileSdkVersion 35/' android/app/build.gradle
+            sed -i -E 's/targetSdkVersion [0-9]+/targetSdkVersion 35/' android/app/build.gradle
           fi
 
       - name: Install dependencies
         run: flutter pub get
 
-      - name: Build APK
-        run: flutter build apk --release
+      - name: Build APK with detailed logs
+        run: flutter build apk --release --verbose
 
       - name: Upload APK Artifact
+        if: success()
         uses: actions/upload-artifact@v4
         with:
           name: app-release
