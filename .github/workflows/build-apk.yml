@@ -18,19 +18,19 @@ jobs:
       - name: Setup Java
         uses: actions/setup-java@v4
         with:
-          distribution: 'temurin'
-          java-version: '17'
+          distribution: 'zulu'
+          java-version: '11'
 
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
+          flutter-version: '3.24.0'
           channel: 'stable'
-          cache: true
 
-      - name: Create missing files and Get Dependencies
+      - name: Create missing files and Force Update
         run: |
           flutter create .
-          flutter pub get
+          flutter pub upgrade --major-versions
 
       - name: Build APK
         run: flutter build apk --release
